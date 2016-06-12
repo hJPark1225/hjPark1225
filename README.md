@@ -30,7 +30,7 @@ DOCUMENTATION:
 
 SOFTWARE REQUIREMENTS:
   
-   bootstrap
-   mysql-connector-java-5.1.38
-   org.snu.ids.ha 꼬꼬마, 한글 형태소 분석기
-   jsoup-1.9.1
+   * bootstrap
+   * mysql-connector-java-5.1.38
+   * org.snu.ids.ha 꼬꼬마, 한글 형태소 분석기
+   * jsoup-1.9.1
