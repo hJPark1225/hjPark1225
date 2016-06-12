@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="org.kedu.mapper.VideoMapper">
+	
+	<insert id="create">
+		insert into tbl_video (url, title, moddate, thumbnail_url, crawling, keyword_id) 
+		values(#{url}, #{title}, #{moddate}, #{thumbnail_url}, #{crawling}, #{keyword_id})
+	</insert>
+	
+	<select id="read" resultType="VideoVO">
+		select
+		 vid, url, title, moddate, thumbnail_url, crawling, keyword_id
+		from
+		 tbl_video
+		where vid = #{vid}  
+	</select>
+		
+	<update id="update">
+		update tbl_video set moddate = #{moddate}
+		where vid = #{vid}
+	</update>
+	
+	<delete id="delete">
+		delete from tbl_video where vid = #{vid}
+	</delete>
+	
+	<select id="listAll" resultType="VideoVO">
+	<![CDATA[
+		select
+		 vid, url, title, moddate, thumbnail_url, crawling, keyword_id
+		from
+		 tbl_video
+		where vid > 0
+		order by vid, moddate  	
+	]]>
+	</select>
+	
+	<select id="listAllByKeyword" resultType="VideoVO">
+	<![CDATA[
+		select
+		 vid, url, title, moddate, thumbnail_url, crawling, keyword_id
+		from
+		 tbl_video
+		where keyword_id = #{kno}
+		order by vid, moddate	
+	]]>
+	</select>
+	
+	
+	<select id="listPage" resultType="VideoVO">
+	<![CDATA[
+		select
+		 vid, url, title, moddate, thumbnail_url, crawling, keyword_id
+		from
+		 tbl_video
+		where vid > 0
+		order by vid, moddate
+		limit #{page}, 8 	
+	]]>
+	</select>
+	
+	<select id="listCriteria" resultType="VideoVO">
+	<![CDATA[
+		select
+		 vid, url, title, moddate, thumbnail_url, crawling, keyword_id
+		from
+		 tbl_video
+		where keyword_id = #{kno}
+		order by vid, moddate
+		limit #{pageStart}, #{perPageNum}	
+	]]>
+	</select>
+	
+	<select id="countPaging" resultType="int">
+	<![CDATA[
+		select
+		 count(vid)
+		from
+		 tbl_video
+		where keyword_id = #{kno}	
+	]]>
+	</select>
+
+</mapper>

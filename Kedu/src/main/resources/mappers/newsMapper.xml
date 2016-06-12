@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="org.kedu.mapper.NewsMapper">
+	
+	<insert id="create">
+		insert into tbl_news (url, news_title, crawling, keyword_id, contents, thumbnail_flag, thumbnail_url, score) 
+		values(#{url}, #{news_title}, #{crawling}, #{keyword_id}, #{contents}, #{thumbnail_flag}, #{thumbnail_url}, #{score})
+	</insert>
+	
+	<select id="read" resultType="org.kedu.domain.NewsVO">
+		select
+		 nid, url, news_title, moddate, crawling, keyword_id, thumbnail_flag, thumbnail_url, contents, score
+		from
+		 tbl_news
+		where nid = #{nid}  
+	</select>
+		
+	<update id="update">
+		update tbl_news set moddate = #{moddate}
+		where nid = #{nid}
+	</update>
+	
+	<delete id="delete">
+		delete from tbl_news where nid = #{nid}
+	</delete>
+	
+	<select id="listAll" resultType="NewsVO">
+	<![CDATA[
+		select
+		 nid, url, news_title, moddate, crawling, keyword_id, thumbnail_flag, thumbnail_url, contents, score
+		from
+		 tbl_news
+		where nid > 0
+		order by nid desc, moddate desc 	
+	]]>
+	</select>
+	
+	<select id="listAllByKeyword" resultType="NewsVO">
+	<![CDATA[
+		select
+		 nid, url, news_title, moddate, crawling, keyword_id, thumbnail_flag, thumbnail_url, contents, score
+		from
+		 tbl_news
+		where keyword_id = #{kno}	
+	]]>
+	</select>
+	
+	<select id="listUrlByKeyword" resultType="NewsVO">
+	<![CDATA[
+		select 
+		nid, url, news_title, moddate, crawling, keyword_id, thumbnail_flag, thumbnail_url, contents, score
+		from
+		 tbl_news
+		where keyword_id = #{kno}
+	]]>
+	</select>
+	
+	<update id="updateScore">
+		update tbl_news set score = #{score}
+		where nid = #{nid}
+	</update>
+	
+	
+	<select id="listPage" resultType="NewsVO">
+	<![CDATA[
+		select
+		 nid, url, news_title, moddate, crawling, keyword_id, thumbnail_flag, thumbnail_url, contents, score
+		from
+		 tbl_news
+		where nid > 0
+		order by score desc
+		limit #{page}, 8 	
+	]]>
+	</select>
+	
+	<select id="listCriteria" resultType="NewsVO">
+	<![CDATA[
+		select
+		 nid, url, news_title, moddate, crawling, keyword_id, thumbnail_flag, thumbnail_url, contents, score
+		from
+		 tbl_news
+		where keyword_id = #{kno}
+		order by nid, moddate desc 
+		limit #{pageStart}, #{perPageNum}	
+	]]>
+	</select>
+	
+	<select id="countPaging" resultType="int">
+	<![CDATA[
+		select
+		 count(nid)
+		from
+		 tbl_news
+		where keyword_id = #{kno}	
+	]]>
+	</select>
+
+</mapper>

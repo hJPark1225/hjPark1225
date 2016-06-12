@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="org.kedu.mapper.GuidewordMapper">
+	
+	<insert id="create">
+		insert into tbl_guideword (keyword_id, guideword) 
+		values(#{keyword_id}, #{guideword})
+	</insert>
+	
+	<select id="read" resultType="org.kedu.domain.GuidewordVO">
+		select
+		 gno, keyword_id, guideword 
+		from
+		 tbl_guideword
+		where gno = #{gno}  
+	</select>
+	
+	<delete id="delete">
+		delete from tbl_guideword where keyword_id = #{keyword_id}
+	</delete>
+	
+	<select id="listAllByKeyword" resultType="GuidewordVO">
+	<![CDATA[
+		select
+		 gno, keyword_id, guideword 
+		from
+		 tbl_guideword
+		where keyword_id = #{keyword_id}  
+		order by gno
+	]]>
+	</select>
+
+</mapper>

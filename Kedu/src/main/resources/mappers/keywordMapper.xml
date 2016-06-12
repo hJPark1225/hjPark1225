@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="org.kedu.mapper.KeywordMapper">
+	
+	<insert id="create">
+		insert into tbl_keyword (word) 
+		values(#{word})
+	</insert>
+	
+	<select id="read" resultType="org.kedu.domain.KeywordVO">
+		select
+		 kno, word, regdate, crawling
+		from
+		 tbl_keyword
+		where kno = #{kno}  
+	</select>
+	
+	<update id="updateWord">
+		update tbl_keyword set word = #{word}
+		where kno = #{kno}
+	</update>
+	
+	<update id="updateCrawling">
+		update tbl_keyword set crawling = #{crawling}
+		where kno = #{kno}
+	</update>
+	
+	<update id="updateExtracting">
+		update tbl_keyword set extracting  = #{extracting}
+		where kno = #{kno}
+	</update>
+	
+	
+	<delete id="delete">
+		delete from tbl_keyword where kno = #{kno}
+	</delete>
+	
+	<select id="listAll" resultType="org.kedu.domain.KeywordVO">
+	<![CDATA[
+		select
+		 kno, word, regdate, crawling, extracting
+		from
+		 tbl_keyword
+		where kno > 0
+		order by kno , regdate	
+	]]>
+	</select>
+	
+	<select id="listPage" resultType="KeywordVO">
+	<![CDATA[
+		select
+		 kno, word, regdate, crawling, extracting 
+		from
+		 tbl_keyword
+		where kno > 0
+		order by kno, regdate 
+		limit #{page}, 8 	
+	]]>
+	</select>
+	
+	<select id="listCriteria" resultType="KeywordVO">
+	<![CDATA[
+		select
+		 kno, word, regdate, crawling, extracting
+		from
+		 tbl_keyword
+		where kno > 0
+		order by kno, regdate
+		limit #{pageStart}, #{perPageNum}	
+	]]>
+	</select>
+	
+	<select id="countPaging" resultType="int">
+	<![CDATA[
+		select
+		 count(kno)
+		from
+		 tbl_keyword
+		where kno > 0	
+	]]>
+	</select>
+	
+
+</mapper>
