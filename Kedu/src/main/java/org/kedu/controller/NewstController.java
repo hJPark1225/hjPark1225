@@ -58,34 +58,4 @@ public class NewstController {
 		return "/news/listPage";
 	}
 	
-	/*
-	 * @RequestMapping(value = "/register", method = RequestMethod.POST) public
-	 * String registPOST(KeywordVO keyword, RedirectAttributes rttr)throws
-	 * Exception{
-	 * 
-	 * logger.info("regist post..........."); logger.info(keyword.toString());
-	 * 
-	 * service.regist(keyword);
-	 * 
-	 * rttr.addFlashAttribute("msg", "SUCCESS"); return
-	 * "redirect:/keyword/listAll"; }
-	 * 
-	 * @RequestMapping(value = "/listAll", method = RequestMethod.GET) public
-	 * void listAll(Model model)throws Exception { logger.info(
-	 * "show all list.........."); model.addAttribute("list",
-	 * service.listAll()); }
-	 * 
-	 * @RequestMapping(value = "/read", method = RequestMethod.GET) public void
-	 * read(@RequestParam("kno") int kno, Model model) throws Exception {
-	 * model.addAttribute(service.read(kno)); }
-	 * 
-	 * @RequestMapping(value ="/remove", method = RequestMethod.POST) public
-	 * String remove(@RequestParam("kno") int kno, RedirectAttributes rttr)
-	 * throws Exception { service.remove(kno);
-	 * 
-	 * rttr.addFlashAttribute("msg", "SUCCESS");
-	 * 
-	 * return "redirect:/keyword/listAll"; }
-	 */
-
 }

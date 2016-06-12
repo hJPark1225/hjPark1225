@@ -47,8 +47,7 @@ public class KeywordController {
 		logger.info(keyword.toString());
 		
 		service.regist(keyword);
-		//extrtGrd(keyword);
-		
+
 		rttr.addFlashAttribute("msg", "SUCCESS");
 		
 		return "redirect:/keyword/listPage";

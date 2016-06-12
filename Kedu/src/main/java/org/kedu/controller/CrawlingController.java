@@ -14,7 +14,6 @@ import org.jsoup.select.Elements;
 import org.kedu.domain.GuidewordVO;
 import org.kedu.domain.KeywordVO;
 import org.kedu.domain.NewsVO;
-import org.kedu.domain.TF_IDF;
 import org.kedu.domain.VideoVO;
 import org.kedu.service.GuidewordService;
 import org.kedu.service.KeywordService;
@@ -96,13 +95,11 @@ public class CrawlingController {
 							}
 						}
 
-						// url_list.addAll(crawlingNewsTest(vo.getKno(),
-						// vo.getWord(),j));
 					}
 
-					//score_list = calcTfIdF(url_list, guidewordList);
+					score_list = calcTfIdF(url_list, guidewordList);
 
-					if (metadataCrawlingRun(vo.getKno(), url_list)){ // score_list)) {
+					if (metadataCrawlingRun(vo.getKno(), url_list, score_list)) {
 						vo.setCrawling(true);
 						kService.updateCrawling(vo);
 					}
@@ -152,7 +149,8 @@ public class CrawlingController {
 	}
 		
 	
-	private boolean metadataCrawlingRun(Integer kno, ArrayList<String> urlList){
+	// collect contents using metadata
+	private boolean metadataCrawlingRun(Integer kno, ArrayList<String> urlList, ArrayList<Double> score_list){
 		
 		for(int i =0; i<urlList.size(); i++){
 			
@@ -161,8 +159,8 @@ public class CrawlingController {
 				
 				NewsVO vo = new NewsVO();
 				String url = urlList.get(i);
-				//double score = scoreList.get(i);
-				//double score = 0;
+				Double score = score_list.get(i);
+	
 				doc = Jsoup.connect(url).timeout(30000).get();
 				String title = "";
 				Elements metaOgTitle = doc.select("meta[property=og:title]");
@@ -209,7 +207,7 @@ public class CrawlingController {
 				}
 				vo.setContents(description);
 				vo.setCrawling(true);
-				//vo.setScore(score);
+				vo.setScore(score);
 				try {
 					nService.regist(vo);
 				} catch (Exception e) {
@@ -227,6 +225,7 @@ public class CrawlingController {
 		return true;
 	}
 
+	// compute TF-IDF 
 	private ArrayList<Double> calcTfIdF(ArrayList<String> urlList, ArrayList<String> gwordList) {
 
 		ArrayList<String> documentList = new ArrayList<String>();
@@ -439,37 +438,5 @@ public class CrawlingController {
 		
 		return "redirect:/?page=1&perPageNum=8";
 	}
-
-	
-	private ArrayList<String> metadataCrawling(Integer page) throws Exception {
-
-		ArrayList<String> linkList = new ArrayList();
-		
-			String keyword = URLEncoder.encode("클라우드컴퓨팅", "UTF-8"); // 쿼리문에들어갈
-			//Integer page = 1;														// 한글인코딩
-			String url = "http://news.naver.com/main/search/search.nhn?query=" + keyword
-					+ "&display=10&start=1&target=webkr&sm=top_hty&fbm=1&ie=utf8&page=" + page.toString();
-
-			Document doc = Jsoup.connect(url).timeout(30000).get();
-			
-			Element links = doc.getElementsByClass("srch_lst").first();
-			
-			Elements els = links.getElementsByTag("a"); // a태그 몽땅
-			//System.out.println(els);
-				
-			for (Element el : els) {
-
-				if (el.attr("data-url") != "") {
-
-					linkList.add(el.attr("data-url"));	
-				}
-			}
-	
-			return linkList;
-	}
-	
-
-	
-
 
 }

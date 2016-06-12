@@ -1,4 +1,4 @@
-package org.kedu.domain;
+package org.kedu.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,11 +12,10 @@ public class TF_IDF {
 	    String[] wordVector;
 	    int docLength[];
 	    
-	   // String[] a = {"클라우드", "컴퓨팅"};
-	 
+	    
+	    // scan all words and count the number of different words
 	    public TF_IDF(ArrayList<String> docs) {
-	        // STEP 1, scan all words and count the number of different words
-	        // mapWordToIdx maps word to its vector index
+	 
 	        HashMap<String, Integer> mapWordToIdx = new HashMap<>();
 	        int nextIdx = 0;
 	        for (String doc : docs) {
@@ -30,20 +29,25 @@ public class TF_IDF {
 	 
 	        numOfWords = mapWordToIdx.size();
 	 
-	        // STEP 2, create word vector where wordVector[i] is the actual word
+	        // create word vector where wordVector[i] is the actual word
 	        wordVector = new String[numOfWords];
 	        for (String word : mapWordToIdx.keySet()) {
 	            int wordIdx = mapWordToIdx.get(word);
 	            wordVector[wordIdx] = word;
 	        }
 	 
-	        // STEP 3, create doc word vector where docCountVector[i] is number of
-	        // docs containing word of index i
-	        // and doc length vector
+	        /*
+	         * create doc word vector where docCountVector[i] is number of docs
+	         * containing word of index i and doc length vector
+	        */
+	        
 	        int[] docCountVector = new int[numOfWords];
 	        docLength = new int[docs.size()];
-	        // lastDocWordVector is auxilary vector keeping track of last doc index
-	        // containing the word
+	        
+	        /* 
+	         * lastDocWordVector is auxiliary vector keeping track of last doc index
+	         * containing the word
+	         */
 	        int[] lastDocWordVector = new int[numOfWords];
 	        for (int wordIdx = 0; wordIdx < numOfWords; wordIdx++) {
 	            lastDocWordVector[wordIdx] = -1;
@@ -61,13 +65,13 @@ public class TF_IDF {
 	            }
 	        }
 	 
-	        // STEP 4, compute IDF vector based on docCountVector
+	        // compute IDF vector based on docCountVector
 	        idfVector = new double[numOfWords];
 	        for (int wordIdx = 0; wordIdx < numOfWords; wordIdx++) {
 	            idfVector[wordIdx] = Math.log10(1 + (double) docs.size() / (docCountVector[wordIdx]));
 	        }
 	 
-	        // STEP 5, compute term frequency matrix, tfMatrix[docIdx][wordIdx]
+	        // compute term frequency matrix, tfMatrix[docIdx][wordIdx]
 	        tfMatrix = new double[docs.size()][];
 	        for (int docIdx = 0; docIdx < docs.size(); docIdx++) {
 	            tfMatrix[docIdx] = new double[numOfWords];
@@ -79,15 +83,18 @@ public class TF_IDF {
 	                tfMatrix[docIdx][wordIdx] = tfMatrix[docIdx][wordIdx] + 1;
 	            }
 	        }
-	        // normalize idfMatrix by deviding corresponding doc length
+	        // normalize idfMatrix by dividing corresponding doc length
 	        for (int docIdx = 0; docIdx < docs.size(); docIdx++) {
 	            for (int wordIdx = 0; wordIdx < numOfWords; wordIdx++) {
 	                tfMatrix[docIdx][wordIdx] = tfMatrix[docIdx][wordIdx] / docLength[docIdx];
 	            }
 	        }
 	 
-	        // STEP 6, compute final TF-IDF matrix
-	        // tfIdfMatrix[docIdx][wordIdx] = tfMatrix[docIdx][wordIdx] * idfVector[wordIdx]
+	        /*
+	         * compute final TF-IDF matrix
+	         * tfIdfMatrix[docIdx][wordIdx] = tfMatrix[docIdx][wordIdx] * idfVector[wordIdx]
+	         */
+	         
 	        tfIdfMatrix = new double[docs.size()][];
 	        for (int docIdx = 0; docIdx < docs.size(); docIdx++) {
 	            tfIdfMatrix[docIdx] = new double[numOfWords];
